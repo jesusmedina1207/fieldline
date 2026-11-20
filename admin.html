@@ -60,7 +60,7 @@ function save() {
 function nid() { return Date.now(); }
 // Vista previa de la tienda con tu borrador (se actualiza sola al guardar)
 let vistaWin = null;
-function vista() { vistaWin = window.open('index (1).html?preview=1', 'vistaTienda'); }
+function vista() { vistaWin = window.open('index.html?preview=1', 'vistaTienda'); }
 window.addEventListener('message', e => {
   if (e.data && e.data.tipo === 'pedir' && e.source) e.source.postMessage({ tipo: 'datos', D }, '*');
 });
