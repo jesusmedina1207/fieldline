@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fieldline</title>
+<style>
+:root{--c:#ece8da;--ct:#111;--bg:#0b0b0c;--card:#151517;--line:#26262a;--tx:#f2efe6;--mut:#8d8d95}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--tx);background:var(--bg);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+
+.anuncio{background:var(--c);color:var(--ct);text-align:center;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:9px 12px}
+
+header{position:sticky;top:0;z-index:20;background:rgba(11,11,12,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 28px;height:68px}
+nav{display:flex;gap:26px}
+nav a,.der a{font-size:.76rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;position:relative;padding:4px 0}
+nav a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--c);transition:width .25s}
+nav a:hover::after{width:100%}
+.logo{display:flex;align-items:center;gap:12px}
+.badge{width:38px;height:38px;border-radius:50%;background:var(--c);color:var(--ct);display:flex;align-items:center;justify-content:center;font:italic 700 1.05rem Georgia,serif;letter-spacing:-.04em}
+.logo b{font-size:1.25rem;font-weight:900;letter-spacing:.22em;text-transform:uppercase}
+.der{text-align:right}
+
+.slider{position:relative;height:calc(100vh - 106px);min-height:460px;max-height:820px;overflow:hidden;background:#111}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease;display:flex;align-items:flex-end;padding:0 56px 90px}
+.slide.on{opacity:1;z-index:1}
+.slide::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(0,0,0,.7),rgba(0,0,0,0) 60%)}
+.slide .bg{position:absolute;inset:0;transform:scale(1.06);transition:transform 6s ease-out}
+.slide.on .bg{transform:scale(1)}
+.tx{position:relative;z-index:2;max-width:680px}
+.tx small{display:block;font-size:.75rem;letter-spacing:.24em;text-transform:uppercase;margin-bottom:12px;color:var(--c)}
+.tx h2{font-size:clamp(2.6rem,8vw,6rem);font-weight:900;line-height:.92;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:18px}
+.tx p{font-size:1rem;margin-bottom:26px;opacity:.9}
+.btn{display:inline-block;background:var(--c);color:var(--ct);padding:15px 36px;font-size:.78rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;border:0;cursor:pointer;transition:.2s}
+.btn:hover{background:#fff}
+.nav{position:absolute;bottom:34px;z-index:3;width:46px;height:46px;border:1px solid rgba(255,255,255,.6);background:transparent;color:#fff;font-size:1.3rem;cursor:pointer;transition:.2s}
+.nav:hover{background:var(--c);color:var(--ct);border-color:var(--c)}
+.prev{right:112px}.next{right:56px}
+.lineas{position:absolute;left:56px;bottom:46px;display:flex;gap:8px;z-index:3}
+.lineas i{width:44px;height:3px;background:rgba(255,255,255,.3);cursor:pointer;overflow:hidden;position:relative}
+.lineas i.on::after{content:"";position:absolute;inset:0;background:var(--c);transform-origin:left;animation:barra 5s linear forwards}
+@keyframes barra{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+section.bloque{padding:70px 28px 0;max-width:1500px;margin:0 auto}
+.titulo{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:26px;flex-wrap:wrap;gap:14px}
+.titulo h3{font-size:1.5rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:6px}
+.tile{position:relative;aspect-ratio:4/5;overflow:hidden;cursor:pointer;display:flex;align-items:flex-end;padding:26px;color:#fff}
+.tile .bg{position:absolute;inset:0;transition:transform .8s}
+.tile:hover .bg{transform:scale(1.06)}
+.tile::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65),transparent 60%);z-index:1}
+.tile span{position:relative;z-index:2;font-size:1.5rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid var(--c);padding-bottom:4px}
+
+.filtros{display:flex;gap:24px;flex-wrap:wrap}
+.filtros button{background:none;border:0;border-bottom:2px solid transparent;padding:4px 0;font-size:.76rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;color:var(--mut)}
+.filtros button.on{color:var(--tx);border-color:var(--c)}
+
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px 8px}
+.prod .img{position:relative;aspect-ratio:4/5;background:var(--card);overflow:hidden}
+.prod .img .bg{position:absolute;inset:0;transition:transform .7s}
+.prod:hover .img .bg{transform:scale(1.06)}
+.prod .wa{position:absolute;left:10px;right:10px;bottom:10px;background:var(--c);color:var(--ct);text-align:center;padding:12px;font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:0;transform:translateY(8px);transition:.25s}
+.prod:hover .wa{opacity:1;transform:none}
+.prod .wa:hover{background:#fff}
+.info{padding:12px 4px 0}
+.info small{display:block;color:var(--mut);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
+.info h4{font-size:.9rem;font-weight:600;margin-bottom:4px}
+.info p{font-size:.8rem;color:var(--mut);margin-bottom:6px}
+.info b{font-size:.9rem;color:var(--c)}
+.vacio{grid-column:1/-1;text-align:center;color:var(--mut);padding:60px 0}
+
+.benef{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:center;margin-top:80px;padding:44px 28px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.benef b{display:block;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+.benef span{font-size:.82rem;color:var(--mut)}
+
+footer{background:#070708;padding:60px 28px 30px}
+.fcols{max-width:1500px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px}
+footer h5{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px;color:var(--c)}
+footer p,footer a{display:block;font-size:.85rem;color:#a5a5ad;margin-bottom:8px;cursor:pointer}
+footer a:hover{color:#fff}
+.copy{max-width:1500px;margin:40px auto 0;padding-top:20px;border-top:1px solid var(--line);font-size:.72rem;color:#666;letter-spacing:.1em;text-transform:uppercase}
+
+.fab{position:fixed;right:20px;bottom:20px;z-index:30;width:54px;height:54px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.fab svg{width:28px;height:28px;fill:#fff}
+
+@media(max-width:900px){
+  header{padding:0 14px}
+  nav{gap:14px}.der{display:none}
+  .grid{grid-template-columns:repeat(2,1fr);gap:22px 6px}
+  .prod .wa{opacity:1;transform:none;position:static;margin-top:8px}
+  .slide{padding:0 22px 90px}.lineas{left:22px}.prev{right:78px}.next{right:22px}
+  .nav{width:40px;height:40px}
+  section.bloque{padding:50px 14px 0}
+  .tiles{grid-template-columns:1fr 1fr}
+  .tile{aspect-ratio:1;padding:16px}.tile span{font-size:1.05rem}
+  .benef{grid-template-columns:1fr}
+  .fcols{grid-template-columns:1fr}
+}
+@media(max-width:620px){nav a{font-size:.62rem;letter-spacing:.06em}.logo b{display:none}}
+</style>
+</head>
+<body>
+<div class="anuncio" id="anuncio"></div>
+<header>
+  <nav id="menu"></nav>
+  <a class="logo" href="#"><span class="badge">FL</span><b id="marca"></b></a>
+  <div class="der"><a id="contacto" target="_blank">Contacto</a></div>
+</header>
+
+<section class="slider" id="slider"></section>
+
+<section class="bloque"><div class="tiles" id="tiles"></div></section>
+
+<section class="bloque" id="catalogo">
+  <div class="titulo"><h3>Lo más nuevo</h3><div class="filtros" id="filtros"></div></div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<div class="benef">
+  <div><b>Envíos a todo México</b><span>Recibe tu pedido en la puerta de tu casa</span></div>
+  <div><b>Pedidos por DM o WhatsApp</b><span>Atención directa y rápida</span></div>
+  <div><b>Nuevos drops</b><span>Sigue las historias para ver lo más reciente</span></div>
+</div>
+
+<footer>
+  <div class="fcols">
+    <div><h5 id="fmarca"></h5><p id="feslogan"></p></div>
+    <div><h5>Comprar</h5><div id="flinks"></div></div>
+    <div><h5>Contacto</h5><a id="fig" target="_blank">Instagram</a><a id="fwa" target="_blank">WhatsApp</a></div>
+  </div>
+  <div class="copy" id="copy"></div>
+</footer>
+
+<a class="fab" id="fab" target="_blank" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm5.2 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.4.6c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.1.1.6-.1 1.2z"/></svg></a>
+
+<script src="store.js"></script>
+<script>
+let D, filtro = 'todos', idx = 0, timer;
+const PREVIEW = location.search.includes('preview');
+
+function textoSobre(hex) {
+  const h = (hex || '#fff').replace('#', '');
+  const n = parseInt(h.length === 3 ? h.split('').map(x => x + x).join('') : h, 16);
+  const l = (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255));
+  return l > 150 ? '#111' : '#fff';
+}
+
+async function init(datos) {
+  D = datos || (PREVIEW ? cargar() : await cargarPublico());
+  const c = D.config;
+  const root = document.documentElement.style;
+  root.setProperty('--c', c.color); root.setProperty('--ct', textoSobre(c.color));
+  document.title = c.nombre;
+  anuncio.textContent = c.anuncio || ''; anuncio.style.display = c.anuncio ? '' : 'none';
+  marca.textContent = c.nombre; fmarca.textContent = c.nombre; feslogan.textContent = c.eslogan;
+  copy.textContent = '© ' + new Date().getFullYear() + ' ' + c.nombre;
+  const wa = 'https://wa.me/' + c.whatsapp;
+  contacto.href = fwa.href = fab.href = wa;
+  fig.href = 'https://www.instagram.com/' + (c.instagram || '');
+  fig.style.display = c.instagram ? '' : 'none';
+  const cats = Object.entries(CATS);
+  menu.innerHTML = cats.map(([k, n]) => `<a onclick="ir('${k}')">${n}</a>`).join('');
+  filtros.innerHTML = [['todos', 'Todo'], ...cats].map(([k, n]) => `<button data-f="${k}" class="${k === filtro ? 'on' : ''}">${n}</button>`).join('');
+  flinks.innerHTML = cats.map(([k, n]) => `<a onclick="ir('${k}')">${n}</a>`).join('') + `<a onclick="ir('todos')">Ver todo</a>`;
+  pintarSlider(); pintarTiles(); pintarProductos();
+}
+
+function pintarSlider() {
+  const s = D.slides;
+  if (!s.length) { slider.style.display = 'none'; return; }
+  slider.style.display = '';
+  if (idx >= s.length) idx = 0;
+  slider.innerHTML = s.map((x, i) => `
+    <div class="slide ${i === idx ? 'on' : ''}">
+      <div class="bg" style='${fondo(x.imagen, i)}'></div>
+      <div class="tx"><small>${esc(D.config.nombre)}</small><h2>${esc(x.titulo)}</h2>
+      ${x.subtitulo ? `<p>${esc(x.subtitulo)}</p>` : ''}
+      ${x.boton ? `<button class="btn" onclick="ir('${esc(x.categoria || 'todos')}')">${esc(x.boton)}</button>` : ''}</div>
+    </div>`).join('') +
+    (s.length > 1 ? `<div class="lineas">${s.map((_, i) => `<i class="${i === idx ? 'on' : ''}" onclick="idx=${i};pintarSlider()"></i>`).join('')}</div>
+    <button class="nav prev" onclick="mover(-1)">‹</button><button class="nav next" onclick="mover(1)">›</button>` : '');
+  clearInterval(timer);
+  if (s.length > 1) timer = setInterval(() => mover(1), 5000);
+}
+function mover(d) { idx = (idx + d + D.slides.length) % D.slides.length; pintarSlider(); }
+
+function pintarTiles() {
+  tiles.innerHTML = Object.entries(CATS).map(([k, n], i) => {
+    const p = D.productos.find(x => x.categoria === k && x.imagen);
+    return `<div class="tile" onclick="ir('${k}')"><div class="bg" style='${fondo(p ? p.imagen : '', i + 1)}'></div><span>${n}</span></div>`;
+  }).join('');
+}
+
+function ir(cat) {
+  filtro = cat;
+  document.querySelectorAll('#filtros button').forEach(b => b.classList.toggle('on', b.dataset.f === cat));
+  pintarProductos();
+  document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' });
+}
+
+function pintarProductos() {
+  const lista = D.productos.filter(p => filtro === 'todos' || p.categoria === filtro);
+  grid.innerHTML = lista.length ? lista.map((p, i) => {
+    const precio = Number(p.precio) > 0 ? `<b>$${Number(p.precio).toLocaleString('es-MX')} MXN</b>` : `<b>Consultar precio</b>`;
+    const msg = encodeURIComponent(`Hola, me interesa: ${p.nombre}` + (Number(p.precio) > 0 ? ` ($${p.precio})` : ''));
+    return `<article class="prod"><div class="img"><div class="bg" style='${fondo(p.imagen, i)}'></div>
+      <a class="wa" target="_blank" href="https://wa.me/${esc(D.config.whatsapp)}?text=${msg}">Pedir info</a></div>
+      <div class="info"><small>${esc(CATS[p.categoria] || '')}</small>
+      <h4>${esc(p.nombre)}</h4>${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ''}${precio}</div></article>`;
+  }).join('') : '<div class="vacio">No hay productos en esta categoría.</div>';
+}
+
+filtros.onclick = e => { if (e.target.dataset.f) ir(e.target.dataset.f); };
+window.addEventListener('storage', e => { if (e.key === KEY) init(); });
+// Vista previa: el admin le manda el borrador directamente
+window.addEventListener('message', e => { if (PREVIEW && e.data && e.data.tipo === 'datos') init(e.data.D); });
+if (PREVIEW) {
+  if (window.opener) { try { window.opener.postMessage({ tipo: 'pedir' }, '*'); } catch (e) {} }
+  const b = document.createElement('div');
+  b.textContent = 'Vista previa · así se verá con tus cambios (aún no publicados)';
+  b.style.cssText = 'background:#ff4a3a;color:#fff;text-align:center;font:700 .72rem sans-serif;letter-spacing:.12em;padding:8px;text-transform:uppercase';
+  document.body.prepend(b);
+}
+init();
+</script>
+</body>
+</html>

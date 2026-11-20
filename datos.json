@@ -1,0 +1,22 @@
+{
+  "config": {
+    "nombre": "FIELDLINE",
+    "eslogan": "Streetwear · Sudaderas · Playeras · Zapatos",
+    "anuncio": "Info por DM o WhatsApp · Envíos a todo México",
+    "whatsapp": "5214420000000",
+    "instagram": "fieldline_2",
+    "color": "#ece8da"
+  },
+  "slides": [
+    { "id": 1, "titulo": "Nuevo drop", "subtitulo": "Sudaderas con zipper y capucha", "imagen": "", "boton": "Ver sudaderas", "categoria": "sudadera" },
+    { "id": 2, "titulo": "Playeras oversize", "subtitulo": "Cortes holgados, colores que se notan", "imagen": "", "boton": "Ver playeras", "categoria": "playera" },
+    { "id": 3, "titulo": "Camina diferente", "subtitulo": "Zapatos para todos los días", "imagen": "", "boton": "Ver zapatos", "categoria": "zapato" }
+  ],
+  "productos": [
+    { "id": 11, "categoria": "sudadera", "nombre": "Hoodie Zip Negro", "precio": 0, "descripcion": "Info por DM.", "imagen": "" },
+    { "id": 12, "categoria": "sudadera", "nombre": "Hoodie Zip Azul", "precio": 0, "descripcion": "Info por DM.", "imagen": "" },
+    { "id": 13, "categoria": "playera", "nombre": "Playera Oversize Negra", "precio": 0, "descripcion": "Info por DM.", "imagen": "" },
+    { "id": 14, "categoria": "playera", "nombre": "Playera Oversize Blanca", "precio": 0, "descripcion": "Info por DM.", "imagen": "" },
+    { "id": 15, "categoria": "zapato", "nombre": "Tenis Urbanos", "precio": 0, "descripcion": "Info por DM.", "imagen": "" }
+  ]
+}
